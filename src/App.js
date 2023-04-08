@@ -3,9 +3,11 @@ import { useQuery } from "react-query";
 import SelectCountry from "./components/SelectCountry";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import LineChart from "./components/LineChart";
-import BarChart from "./components/BarChart";
+import RenderLineChart from "./components/RenderLineChart";
+import RenderBarChart from "./components/RenderBarChart";
 import { useState } from "react";
+
+// tag a me volvia a iniciar toda la app cada vez que hacia click entonces no se guardba el estado, porque?
 
 function App() {
   const { data } = useQuery("products", () => {
@@ -17,27 +19,31 @@ function App() {
   });
 
   const [selectedCountry, setSelectedCountry] = useState({});
+  const [selectedChart, setSelectedChart] = useState("");
 
   if (!data) return "loading";
 
   const options = Object.keys(data).map((countryCode) => {
     return { value: countryCode, label: data[countryCode].location };
   });
-  console.log("@options", options);
-  console.log("@selectedCountry", selectedCountry)
+  console.log("@selectedCountry", selectedCountry);
+  console.log("selectedChart", selectedChart);
 
   return (
     <main>
-      {
-        <SelectCountry
-          options={options}
-          selectedCountry={selectedCountry}
-          setSelectedCountry={setSelectedCountry}
-          data={data}
-        ></SelectCountry>
-      }
-      <NavBar></NavBar>
-      {true ? <BarChart></BarChart> : <LineChart></LineChart>}
+      <SelectCountry
+        options={options}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+        data={data}
+      ></SelectCountry>
+
+      <NavBar setSelectedChart={setSelectedChart}></NavBar>
+      {selectedChart === "Line Chart" ? (
+        <RenderLineChart selectedCountry={selectedCountry}></RenderLineChart>
+      ) : (
+        <RenderBarChart></RenderBarChart>
+      )}
       <Footer></Footer>
     </main>
   );
