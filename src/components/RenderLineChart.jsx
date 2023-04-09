@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from "recharts";
 
 function RenderLineChart({ selectedCountry }) {
   const data = [selectedCountry];
@@ -14,6 +14,7 @@ function RenderLineChart({ selectedCountry }) {
           <XAxis name="Date" dataKey="last_updated_date" />
           <YAxis />
           <Legend />
+          <Tooltip />
           <Line
             name={newOrAcumulative + " " + deathsOrCases}
             type="monotone"
