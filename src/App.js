@@ -7,7 +7,10 @@ import RenderLineChart from "./components/RenderLineChart";
 import RenderBarChart from "./components/RenderBarChart";
 import { useState } from "react";
 
-// tag a me volvia a iniciar toda la app cada vez que hacia click entonces no se guardba el estado, porque?
+// tag <a> me volvia a iniciar toda la app cada vez que hacia click entonces no se guardba el estado, porque?
+// el dropdown es la mejor manera??
+// para el bar chart me queda mas util usar los datos simplificados, se puede?
+// hay que eliminar del array de datos simplificados aquellos que no son de paises (world, continentes, etc, todo tienen la key "continent=null")
 
 function App() {
   const { data } = useQuery("products", () => {
@@ -26,8 +29,6 @@ function App() {
   const options = Object.keys(data).map((countryCode) => {
     return { value: countryCode, label: data[countryCode].location };
   });
-  console.log("@selectedCountry", selectedCountry);
-  console.log("selectedChart", selectedChart);
 
   return (
     <main>
@@ -42,7 +43,10 @@ function App() {
       {selectedChart === "Line Chart" ? (
         <RenderLineChart selectedCountry={selectedCountry}></RenderLineChart>
       ) : (
-        <RenderBarChart></RenderBarChart>
+        <RenderBarChart
+          data={data}
+          selectedCountry={selectedCountry}
+        ></RenderBarChart>
       )}
       <Footer></Footer>
     </main>
