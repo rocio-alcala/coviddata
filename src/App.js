@@ -22,13 +22,14 @@ function App() {
   });
 
   const [selectedCountry, setSelectedCountry] = useState({});
-  const [selectedChart, setSelectedChart] = useState("");
+  const [selectedChart, setSelectedChart] = useState("lineChart");
 
   if (!data) return "loading";
 
   const options = Object.keys(data).map((countryCode) => {
     return { value: countryCode, label: data[countryCode].location };
   });
+
 
   return (
     <main>
@@ -40,7 +41,7 @@ function App() {
       ></SelectCountry>
 
       <NavBar setSelectedChart={setSelectedChart}></NavBar>
-      {selectedChart === "Line Chart" ? (
+      {selectedChart === "lineChart" ? (
         <RenderLineChart selectedCountry={selectedCountry}></RenderLineChart>
       ) : (
         <RenderBarChart

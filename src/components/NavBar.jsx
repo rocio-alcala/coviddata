@@ -5,10 +5,10 @@ function NavBar({ setSelectedChart }) {
 
   return (
     <nav>
-      <button onClick={() => handleOnClick("Line Chart")}>
+      <button onClick={() => handleOnClick("lineChart")}>
         Reported cases
       </button>
-      <button onClick={() => handleOnClick("Bar Chart")}>Ranked charts</button>
+      <button onClick={() => handleOnClick("barChart")}>Ranked charts</button>
     </nav>
   );
 }
