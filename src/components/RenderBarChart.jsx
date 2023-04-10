@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { XAxis, YAxis, BarChart, Bar, Tooltip, Cell, Legend } from "recharts";
 
 function RenderBarChart({ data, selectedCountry }) {
-  const dataArray = Object.values(data);
+  const dataArray = Object.values(data).filter(obj => obj.continent !== undefined && obj.continent !== null)
   const [dataRender, setDataRender] = useState("total_cases");
   const [topNumber, setTopNumber] = useState(10);
 
