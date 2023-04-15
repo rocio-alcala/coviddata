@@ -1,30 +1,53 @@
 import { Fragment, useState } from "react";
 import { XAxis, YAxis, BarChart, Bar, Tooltip, Cell, Legend } from "recharts";
+import { useQuery } from "react-query";
 
-function RenderBarChart({ data, selectedCountry }) {
-  const dataArray = Object.values(data).filter(obj => obj.continent !== undefined && obj.continent !== null)
+function RenderBarChart({ selectedCountry }) {
   const [dataRender, setDataRender] = useState("total_cases");
   const [topNumber, setTopNumber] = useState(10);
 
-  const topRender = dataArray.sort((a, b) => b[dataRender] - a[dataRender]).slice(0, topNumber);
+  const { data } = useQuery("latestData", () => {
+    return fetch(
+      "https://covid.ourworldindata.org/data/latest/owid-covid-latest.json"
+    ).then((response) => {
+      return response.json();
+    });
+  });
 
+  if (!data) return "loading";
+
+  const dataArray = Object.values(data).filter(
+    (obj) => obj.continent !== undefined && obj.continent !== null
+  );
+
+  const topRender = dataArray
+    .sort((a, b) => b[dataRender] - a[dataRender])
+    .slice(0, topNumber);
 
   return (
     <Fragment>
-      <section>
-        <BarChart width={500} height={300} data={topRender}>
-        <Bar dataKey={dataRender} name={dataRender} fill='#8884d8'>
-              {topRender.map((country) => (
-                <Cell cursor="pointer" fill={country.location === selectedCountry.location ? '#82ca9d' : '#8884d8'} key={country.location} />
-              ))}
-            </Bar>
+      <section className="chart">
+        <BarChart width={800} height={500} data={topRender}>
+          <Bar dataKey={dataRender} name={dataRender} fill="#8884d8">
+            {topRender.map((country) => (
+              <Cell
+                cursor="pointer"
+                fill={
+                  country.location === selectedCountry.location
+                    ? "#82ca9d"
+                    : "#8884d8"
+                }
+                key={country.location}
+              />
+            ))}
+          </Bar>
           <XAxis name="Country" dataKey="location" />
           <YAxis />
           <Legend />
           <Tooltip />
         </BarChart>
       </section>
-      <aside>
+      <aside className="controls">
         <div>
           <label for="cases">
             <input

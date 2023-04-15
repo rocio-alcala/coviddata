@@ -1,18 +1,22 @@
 import { Fragment, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from "recharts";
 
-function RenderLineChart({ selectedCountry }) {
-  const data = [selectedCountry];
+function RenderLineChart({ selectedCountry , defaultSelectedCountry }) {
+  let data = [];
+  if (Object.keys(selectedCountry).length === 0) { data = [defaultSelectedCountry]}
+  else {data = [selectedCountry]}
   const [deathsOrCases, setDeathsOrCases] = useState("cases");
   const [newOrAcumulative, setNewOrAcumulative] = useState("new");
 
   return (
     <Fragment>
-      <section>
-        <LineChart width={500} height={300} data={data}>
+      <section className="chart">
+        <h1 className="countryTitle">{data[0].location}</h1>
+        <LineChart width={800} height={500} data={data}>
+          
           <CartesianGrid strokeDasharray="1 1" />
           <XAxis name="Date" dataKey="last_updated_date" />
-          <YAxis />
+          <YAxis name="hola"/>
           <Legend />
           <Tooltip />
           <Line
@@ -22,8 +26,8 @@ function RenderLineChart({ selectedCountry }) {
           />
         </LineChart>
       </section>
-      <aside>
-        <div>
+      <aside className="controls">
+        <div className="control1">
           <label for="new">
             <input
               onClick={() => {
@@ -48,7 +52,7 @@ function RenderLineChart({ selectedCountry }) {
             Acumulative cases
           </label>
         </div>
-        <div>
+        <div className="control2">
           <label for="deaths">
             <input
               onClick={() => {

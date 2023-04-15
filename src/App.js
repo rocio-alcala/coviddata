@@ -11,15 +11,17 @@ import { useState } from "react";
 // el dropdown es la mejor manera??
 // para el bar chart me queda mas util usar los datos simplificados, se puede?
 // hay que eliminar del array de datos simplificados aquellos que no son de paises (world, continentes, etc, todo tienen la key "continent=null")
+// cual es la forma correcta de agregar tipografias??
 
 function App() {
-  const { data } = useQuery("products", () => {
+  const { data } = useQuery("data", () => {
     return fetch(
       "https://covid.ourworldindata.org/data/latest/owid-covid-latest.json"
     ).then((response) => {
       return response.json();
     });
   });
+
 
   const [selectedCountry, setSelectedCountry] = useState({});
   const [selectedChart, setSelectedChart] = useState("lineChart");
@@ -33,16 +35,18 @@ function App() {
 
   return (
     <main>
-      <SelectCountry
-        options={options}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
-        data={data}
-      ></SelectCountry>
-
-      <NavBar setSelectedChart={setSelectedChart}></NavBar>
+      <nav>
+        <SelectCountry
+          options={options}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          data={data}
+        ></SelectCountry>
+        <NavBar setSelectedChart={setSelectedChart} options={options}></NavBar>
+        <button>Dark mode</button>
+      </nav>
       {selectedChart === "lineChart" ? (
-        <RenderLineChart selectedCountry={selectedCountry}></RenderLineChart>
+        <RenderLineChart selectedCountry={selectedCountry} defaultSelectedCountry={data.OWID_WRL}></RenderLineChart>
       ) : (
         <RenderBarChart
           data={data}
