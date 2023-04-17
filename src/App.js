@@ -5,16 +5,15 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import RenderLineChart from "./components/RenderLineChart";
 import RenderBarChart from "./components/RenderBarChart";
-import { useState } from "react";
 
-// tag <a> me volvia a iniciar toda la app cada vez que hacia click entonces no se guardba el estado, porque?
-// el dropdown es la mejor manera??
-// para el bar chart me queda mas util usar los datos simplificados, se puede?
-// hay que eliminar del array de datos simplificados aquellos que no son de paises (world, continentes, etc, todo tienen la key "continent=null")
+import { useState } from "react";
+import DarkMode from "./components/DarkMode";
+
+// el dropdown es la mejor manera?? hacer un map y poner 10 default
 // cual es la forma correcta de agregar tipografias??
 
 function App() {
-  const { data } = useQuery("data", () => {
+  const { data } = useQuery("latestData", () => {
     return fetch(
       "https://covid.ourworldindata.org/data/latest/owid-covid-latest.json"
     ).then((response) => {
@@ -22,9 +21,9 @@ function App() {
     });
   });
 
-
-  const [selectedCountry, setSelectedCountry] = useState({});
+  const [selectedCountry, setSelectedCountry] = useState();
   const [selectedChart, setSelectedChart] = useState("lineChart");
+  const [darkMode, setDarkMode] = useState(false);
 
   if (!data) return "loading";
 
@@ -32,9 +31,8 @@ function App() {
     return { value: countryCode, label: data[countryCode].location };
   });
 
-
   return (
-    <main>
+    <main data-theme={darkMode ? "dark" : "light"}>
       <nav>
         <SelectCountry
           options={options}
@@ -42,15 +40,23 @@ function App() {
           setSelectedCountry={setSelectedCountry}
           data={data}
         ></SelectCountry>
-        <NavBar setSelectedChart={setSelectedChart} options={options}></NavBar>
-        <button>Dark mode</button>
+        <NavBar
+          setSelectedChart={setSelectedChart}
+          selectedChart={selectedChart}
+        ></NavBar>
+        <DarkMode darkMode={darkMode} setDarkMode={setDarkMode}></DarkMode>
       </nav>
       {selectedChart === "lineChart" ? (
-        <RenderLineChart selectedCountry={selectedCountry} defaultSelectedCountry={data.OWID_WRL}></RenderLineChart>
+        <RenderLineChart
+          darkMode={darkMode}
+          selectedCountry={data[selectedCountry] || {}}
+          defaultSelectedCountry={data.OWID_WRL}
+        ></RenderLineChart>
       ) : (
         <RenderBarChart
-          data={data}
-          selectedCountry={selectedCountry}
+          options={options}
+          darkMode={darkMode}
+          selectedCountry={data[selectedCountry] || {}}
         ></RenderBarChart>
       )}
       <Footer></Footer>
