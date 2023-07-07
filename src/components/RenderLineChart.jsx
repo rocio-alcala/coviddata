@@ -3,19 +3,19 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from "r
 
 function RenderLineChart({ selectedCountry , defaultSelectedCountry, darkMode }) {
   let data = [];
-  if (Object.keys(selectedCountry).length === 0) { data = [defaultSelectedCountry]}
-  else {data = [selectedCountry]}
+  if (Object.keys(selectedCountry).length === 0) { data = defaultSelectedCountry}
+  else {data = selectedCountry}
   const [deathsOrCases, setDeathsOrCases] = useState("cases");
   const [newOrAcumulative, setNewOrAcumulative] = useState("new");
 
   return (
     <Fragment>
       <section className="chart">
-        <h1 className="countryTitle">{data[0].location}</h1>
-        <LineChart color={"white"} width={800} height={500} data={data}>
+        <h1 className="countryTitle">{data.location}</h1>
+        <LineChart color={"white"} width={800} height={500} data={data.data}>
           <CartesianGrid strokeDasharray="1 1" />
           <XAxis stroke={darkMode ? "white": "black"} name="Date" dataKey="last_updated_date" />
-          <YAxis stroke={darkMode ? "white": "black"} name="hola"/>
+          <YAxis stroke={darkMode ? "white": "black"}/>
           <Legend />
           <Tooltip />
           <Line

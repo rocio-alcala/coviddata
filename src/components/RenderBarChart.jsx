@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { XAxis, YAxis, BarChart, Bar, Tooltip, Cell, Legend } from "recharts";
 import { useQuery } from "react-query";
+import { ThreeCircles } from "react-loader-spinner";
 
 function RenderBarChart({ selectedCountry, darkMode, options }) {
   const [dataRender, setDataRender] = useState("total_cases");
@@ -14,7 +15,26 @@ function RenderBarChart({ selectedCountry, darkMode, options }) {
     });
   });
 
-  if (!data) return "loading";
+  if (!data)
+    return (
+      <main>
+        <div className="loading">
+          <ThreeCircles
+            height="100"
+            width="100"
+            color="#644964"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="three-circles-rotating"
+            outerCircleColor=""
+            innerCircleColor=""
+            middleCircleColor=""
+          />
+          <p>Please wait while loading the covid data</p>
+        </div>
+      </main>
+    );
 
   const dataArray = Object.values(data).filter(
     (obj) => obj.continent !== undefined && obj.continent !== null

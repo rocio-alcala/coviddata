@@ -5,17 +5,14 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import RenderLineChart from "./components/RenderLineChart";
 import RenderBarChart from "./components/RenderBarChart";
-
 import { useState } from "react";
+import { ThreeCircles } from "react-loader-spinner";
 import DarkMode from "./components/DarkMode";
 
-// el dropdown es la mejor manera?? hacer un map y poner 10 default
-// cual es la forma correcta de agregar tipografias??
-
 function App() {
-  const { data } = useQuery("latestData", () => {
+  const { data } = useQuery("data", () => {
     return fetch(
-      "https://covid.ourworldindata.org/data/latest/owid-covid-latest.json"
+      "https://covid.ourworldindata.org/data/owid-covid-data.json"
     ).then((response) => {
       return response.json();
     });
@@ -25,11 +22,32 @@ function App() {
   const [selectedChart, setSelectedChart] = useState("lineChart");
   const [darkMode, setDarkMode] = useState(false);
 
-  if (!data) return "loading";
+  if (!data)
+    return (
+      <main>
+        <div className="loading">
+        <ThreeCircles
+          height="100"
+          width="100"
+          color="#644964"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+        />
+        <p>Please wait while loading the covid data</p>
+        </div>
+      </main>
+    );
 
   const options = Object.keys(data).map((countryCode) => {
     return { value: countryCode, label: data[countryCode].location };
   });
+  console.log("@options", options);
+  console.log("@selectedCountry", selectedCountry);
 
   return (
     <main data-theme={darkMode ? "dark" : "light"}>
@@ -38,7 +56,6 @@ function App() {
           options={options}
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
-          data={data}
         ></SelectCountry>
         <NavBar
           setSelectedChart={setSelectedChart}

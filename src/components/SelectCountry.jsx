@@ -1,4 +1,4 @@
-function SelectCountry({ options, selectedCountry, setSelectedCountry, data }) {
+function SelectCountry({ options, selectedCountry, setSelectedCountry }) {
   function handleChange(e) {
     const selectedCountryCode = e.target.value;
     setSelectedCountry(selectedCountryCode);

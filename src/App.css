@@ -31,7 +31,9 @@ main {
   border-radius: 65%;
 }
 
-.mode:hover {background-color: var(--secondary-link-color);}
+.mode:hover {
+  background-color: var(--secondary-link-color);
+}
 
 button[hola="active"] {
   background-color: var(--secondary-link-color);
@@ -78,7 +80,7 @@ label {
 }
 .chart {
   margin: 2rem;
-  color:rgb(249, 249, 247);
+  color: rgb(249, 249, 247);
 }
 
 aside div {
@@ -89,8 +91,18 @@ aside div {
   margin: 0 auto 0 auto;
 }
 
+.loading {
+  display: flex;
+  flex: auto;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  height: 45rem;
+  justify-content: center;
+}
+
 footer {
   background-color: var(--secondary-background-color);
   padding: 2rem;
-color: var(--text-color)
+  color: var(--text-color);
 }
