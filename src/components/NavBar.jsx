@@ -1,7 +1,6 @@
 function NavBar({ setSelectedChart , selectedChart }) {
   function handleOnClick(choice) {
     setSelectedChart(choice);
-    console.log("@selectedChart",selectedChart)
   }
 
   return (
